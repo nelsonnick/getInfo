@@ -1,0 +1,28 @@
+@echo off
+title 工商、社保核查程序
+color 3f
+:begin
+echo.
+echo                        欢迎使用工商、社保快速核查程序               
+echo                                                                  制作人：王天硕
+echo.
+echo ===============================================================================
+echo.
+echo 请选择要进行的操作，然后按回车
+echo.
+echo 1.核查工商信息
+echo 2.核查社保信息
+echo 3.检查Java安装环境
+echo 4.退出程序
+echo.
+set /p choose=请输入:
+if "%choose%" == "1" (java -jar getCommerce-1.0.jar)
+if "%choose%" == "2" (java -jar getSecurity-1.0.jar)
+if "%choose%" == "3" (java -version)
+if "%choose%" == "4" ( exit ) else (
+echo 输入有误，请重新输入。
+pause>nul
+::要注意清屏
+cls & goto begin
+)
+pause
