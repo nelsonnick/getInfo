@@ -75,18 +75,9 @@ public class getCommerce {
         }
         gs_response.close();
     }
-    public static void main(String[] args) throws Exception {
+    //public static void main(String[] args) throws Exception {
+    public static void commerce() throws Exception {
         System.out.println("               欢迎使用济南市工商信息批量速查程序         ");
-        System.out.println(" ");
-        System.out.println("------------------------用前须知------------------------");
-        System.out.println(" ");
-        System.out.println("1：本程序必须在办公内网环境下运行！");
-        System.out.println("2：待查的Excel文件必须放置在C盘根目录下！");
-        System.out.println("3：Excel文件后缀为xlsx，不支持xls后缀的低版本Excel文件！");
-        System.out.println("4：Excel文件第一行为标题，如果没有可以不填写！");
-        System.out.println("5：Excel文件第一列内容必须为身份证号码！");
-        System.out.println("6：Excel文件中的信息必须完整，即不能有空白的单元格！");
-        System.out.println("7：单次查询数据量不要超过1000人，否则抓取速度会非常慢！");
         System.out.println(" ");
         System.out.println(" ");
         System.out.println("------------------------结果说明------------------------");
