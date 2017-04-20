@@ -53,7 +53,7 @@ public class util {
      * 保险类型
      */
     public static String getSecurity(String str) {
-        String[] One = new String[278];
+        String[] One = new String[300];
         One[0] = "";
         One[1] = "0010027225";     //济南市历下区就业办公室优抚对象医保户
         One[2] = "0010027227";     //济南市市中区就业办公室优抚对象医保户
@@ -334,7 +334,7 @@ public class util {
         One[277] = "0800000449";   //济南市天桥区劳动就业办公室（养老）
         One[278] = "0800000543";   //济南市历城区人才交流服务中心 （齐鲁）
 
-        String[] Two = new String[552];
+        String[] Two = new String[600];
         Two[0] = "";
         Two[1] = "0800000046";     //济南市中社会劳动保险服务中心（医保正常8+2）
         Two[2] = "0800000047";     //济南市中社会劳动保险服务中心（医保困难5.5）
@@ -855,9 +855,9 @@ public class util {
         for (String a : Two) {
             two = two + a + ",";
         }
-        if (one.indexOf("str") > 0) {
+        if (one.indexOf(str) > 0) {
             return "个人一险";
-        } else if (two.indexOf("str") > 0) {
+        } else if (two.indexOf(str) > 0) {
             return "个人两险";
         } else {
             return "单位五险";
@@ -865,6 +865,6 @@ public class util {
     }
 
     public static void main(String[] args) {
-        System.out.println(getCharacterPosition("xabckabciabcoabcu","abc",5));
+        System.out.println(getSecurity("0800000116"));
     }
 }

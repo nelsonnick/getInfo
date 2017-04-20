@@ -40,13 +40,28 @@ public class getSecurity {
             nextRows.createCell(count + 4).setCellValue(util.getSecurity(jsStr.getString("dwsbjfbh")));
             nextRows.createCell(count + 5).setCellValue(jsStr.getString("zzny"));
         }else{
-            nextRows.createCell(count).setCellValue("无缴费记录");
-            nextRows.createCell(count + 1).setCellValue("无缴费记录");
-            nextRows.createCell(count + 2).setCellValue("无缴费记录");
-            nextRows.createCell(count + 3).setCellValue("无缴费记录");
-            nextRows.createCell(count + 4).setCellValue("无缴费记录");
+            nextRows.createCell(count).setCellValue("");
+            nextRows.createCell(count + 1).setCellValue("");
+            nextRows.createCell(count + 2).setCellValue("");
+            nextRows.createCell(count + 3).setCellValue("");
+            nextRows.createCell(count + 4).setCellValue("");
             nextRows.createCell(count + 5).setCellValue("无缴费记录");
         }
+    }
+    /**
+     * 保存记录
+     * */
+    private static void saveNo( XSSFSheet SheetBefore, XSSFSheet SheetAfter, int count, int i) {
+        XSSFRow nextRows = SheetAfter.createRow(SheetAfter.getLastRowNum()+1);
+        for (int j = 0; j < count; j++) {
+            nextRows.createCell(j).setCellValue(SheetBefore.getRow(i).getCell(j).toString());
+        }
+        nextRows.createCell(count).setCellValue("");
+        nextRows.createCell(count + 1).setCellValue("");
+        nextRows.createCell(count + 2).setCellValue("");
+        nextRows.createCell(count + 3).setCellValue("");
+        nextRows.createCell(count + 4).setCellValue("");
+        nextRows.createCell(count + 5).setCellValue("无缴费记录");
     }
     /**
      * 发起请求
@@ -68,53 +83,85 @@ public class getSecurity {
         HttpEntity gs_entity = gs_response.getEntity();
         String res = EntityUtils.toString(gs_entity, "UTF-8");
 
-
-        if (util.getCount(res, "init('true','true','[") == 1) {
+        if (util.getCount(res, "init('true','true','[") == 0) {
+            saveNo(sheetBefore, sheetAfter, count, i);
+        }else if (util.getCount(res, "init('true','true','[") == 1) {
             if (res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1).indexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs = JSONArray.fromObject(res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1));
                 save(jsStrs, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
         } else if (util.getCount(res, "init('true','true','[") == 2) {
             if (res.substring(res.lastIndexOf("init('true','true','[") + 20, res.lastIndexOf("]');</script>") + 1).lastIndexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs1 = JSONArray.fromObject(res.substring(res.lastIndexOf("init('true','true','[") + 20, res.lastIndexOf("]');</script>") + 1));
                 save(jsStrs1, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
             if (res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1).indexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs2 = JSONArray.fromObject(res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1));
                 save(jsStrs2, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
         } else if (util.getCount(res, "init('true','true','[") == 3) {
             if (res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1).indexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs1 = JSONArray.fromObject(res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1));
                 save(jsStrs1, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
             if (res.substring(res.indexOf("init('true','true','[",res.indexOf("init('true','true','[")+20)+20,res.indexOf("]');</script>",res.indexOf("init('true','true','[")+20)+1).indexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs2 = JSONArray.fromObject(res.substring(res.indexOf("init('true','true','[",res.indexOf("init('true','true','[")+20)+20,res.indexOf("]');</script>",res.indexOf("init('true','true','[")+20)+1));
                 save(jsStrs2, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
             if (res.substring(res.lastIndexOf("init('true','true','[") + 20, res.lastIndexOf("]');</script>") + 1).lastIndexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs3 = JSONArray.fromObject(res.substring(res.lastIndexOf("init('true','true','[") + 20, res.lastIndexOf("]');</script>") + 1));
                 save(jsStrs3, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
         } else if (util.getCount(res, "init('true','true','[") == 4) {
             if (res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1).indexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs1 = JSONArray.fromObject(res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1));
                 save(jsStrs1, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
             if (res.substring(res.indexOf("init('true','true','[",res.indexOf("init('true','true','[")+20)+20,res.indexOf("]');</script>",res.indexOf("init('true','true','[")+20)+1).indexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs2 = JSONArray.fromObject(res.substring(res.indexOf("init('true','true','[",res.indexOf("init('true','true','[")+20)+20,res.indexOf("]');</script>",res.indexOf("init('true','true','[")+20)+1));
                 save(jsStrs2, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
             if (res.substring(getCharacterPosition(res,"init('true','true','[",3)+ 20,getCharacterPosition(res,"]');</script>",3)+ 1).lastIndexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs3 = JSONArray.fromObject(res.substring(getCharacterPosition(res,"init('true','true','[",3)+ 20,getCharacterPosition(res,"]');</script>",3)+ 1));
                 save(jsStrs3, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
             if (res.substring(res.lastIndexOf("init('true','true','[") + 20, res.lastIndexOf("]');</script>") + 1).lastIndexOf("dwsbjfbh") > 0) {
                 JSONArray jsStrs4 = JSONArray.fromObject(res.substring(res.lastIndexOf("init('true','true','[") + 20, res.lastIndexOf("]');</script>") + 1));
                 save(jsStrs4, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
             }
         } else if (util.getCount(res, "init('true','true','[") == 5) {
-
+            if (res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1).indexOf("dwsbjfbh") > 0) {
+                JSONArray jsStrs1 = JSONArray.fromObject(res.substring(res.indexOf("init('true','true','[") + 20, res.indexOf("]');</script>") + 1));
+                save(jsStrs1, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
+            }
+            if (res.substring(res.indexOf("init('true','true','[",res.indexOf("init('true','true','[")+20)+20,res.indexOf("]');</script>",res.indexOf("init('true','true','[")+20)+1).indexOf("dwsbjfbh") > 0) {
+                JSONArray jsStrs2 = JSONArray.fromObject(res.substring(res.indexOf("init('true','true','[",res.indexOf("init('true','true','[")+20)+20,res.indexOf("]');</script>",res.indexOf("init('true','true','[")+20)+1));
+                save(jsStrs2, sheetBefore, sheetAfter, count, i);
+            }else{
+                saveNo(sheetBefore, sheetAfter, count, i);
+            }
         } else {
 
         }
@@ -137,6 +184,9 @@ public class getSecurity {
         System.out.println("------------------------结果说明------------------------");
         System.out.println(" ");
         System.out.println("1：核查结果跟劳动993系统中的社保查询结果保持一致！");
+        System.out.println("2：查询结果仅包含最近一次的缴费情况！");
+        System.out.println("3：查询人员同时存在多个缴纳类型时，程序会尝试全部抓取下来，");
+        System.out.println("   但是居民养老抓取不到，仅会生成一条未交费的记录！");
         System.out.println(" ");
         System.out.println("-------------------------------------------------------");
         System.out.println(" ");

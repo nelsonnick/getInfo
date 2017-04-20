@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.wts</groupId>
-  <artifactId>getInfo</artifactId>
+  <artifactId>getSecurity</artifactId>
   <version>1.0</version>
   <dependencies>
   <dependency>
@@ -61,7 +61,7 @@
             <configuration>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.wts.getInfo</mainClass>
+                  <mainClass>com.wts.getSecurity</mainClass>
                 </transformer>
               </transformers>
             </configuration>
