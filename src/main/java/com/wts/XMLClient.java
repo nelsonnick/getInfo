@@ -13,7 +13,7 @@ public class XMLClient {
     OkHttpClient client = new OkHttpClient();
 
     MediaType mediaType = MediaType.parse("text/xml;charset=GBK");
-    RequestBody body = RequestBody.create(mediaType, getXML(0, "132123197902260016"));
+    RequestBody body = RequestBody.create(mediaType, getXML(false, "132123197608250060"));
     Request request = new Request.Builder()
             .url("http://10.153.50.123:80/lbs/MainServlet")
             .post(body)
@@ -47,16 +47,8 @@ public class XMLClient {
 
   }
 
-  public static String aa(Integer i,String id) {
-    if (i==1) {
-    return "<para sqlstr=\"select '01' sblb,xzbz,jfjs,dwjfjs,jfrylb,si.orgn_natl.dwbh dwbh,dwmc,substr(qsny,1,4)||'.'||substr(qsny,5) qsny,substr(zzny,1,4)||'.'||substr(zzny,5) zzny,'计划' zdlsh from si.emp_plan,si.orgn_natl where grbh='" + id + "' and si.emp_plan.dwbh=si.orgn_natl.dwbh\"/>";
-  }else{
-      return "<para sqlstr=\"select sblb,xzbz,jfjs,dwjfjs,si.orgn_natl.dwbh dwbh,dwmc,substr(qsny,1,4)||'.'||substr(qsny,5) qsny,substr(zzny,1,4)||'.'||substr(zzny,5) zzny,nvl(zdlsh,'未填单据') zdlsh from si.emp_add,si.orgn_natl where grbh='" + id + "' and si.emp_add.dwbh=si.orgn_natl.dwbh\"/>";
-    }
-  }
-
   // 正常情况下的
-  public static String getXML(Integer i, String id) {
+  public static String getXML(Boolean isCommon, String id) {
     StringBuffer sb = new StringBuffer();
     String XML_HEADER = "<?xml version=\"1.0\" encoding=\"GBK\"?>";
     sb.append(XML_HEADER);
@@ -70,7 +62,11 @@ public class XMLClient {
     sb.append("</soap:Header>");
     sb.append("<soap:Body>");
     sb.append("<in:business xmlns:in=\"http://www.molss.gov.cn/\">");
-    sb.append(aa(i,id));
+    if (isCommon) {
+      sb.append("<para sqlstr=\"select '01' sblb,xzbz,jfjs,dwjfjs,jfrylb,si.orgn_natl.dwbh dwbh,dwmc,substr(qsny,1,4)||'.'||substr(qsny,5) qsny,substr(zzny,1,4)||'.'||substr(zzny,5) zzny,'计划' zdlsh from si.emp_plan,si.orgn_natl where grbh='" + id + "' and si.emp_plan.dwbh=si.orgn_natl.dwbh\"/>");
+    } else {
+      sb.append("<para sqlstr=\"select sblb,xzbz,jfjs,dwjfjs,si.orgn_natl.dwbh dwbh,dwmc,substr(qsny,1,4)||'.'||substr(qsny,5) qsny,substr(zzny,1,4)||'.'||substr(zzny,5) zzny,nvl(zdlsh,'未填单据') zdlsh from si.emp_add,si.orgn_natl where grbh='" + id + "' and si.emp_add.dwbh=si.orgn_natl.dwbh\"/>");
+    }
     sb.append("<para g_com_gzrybh=\"cxyh\"/>");
     sb.append("<para g_com_gzryxm=\"通用查询\"/>");
     sb.append("<para g_com_sbjgbh=\"370100\"/>");
