@@ -20,7 +20,7 @@ public class XMLClient {
       Thread.sleep(500);
     } while (!IPget().equals("10.153.73.166"));
     System.out.println("切换到内网");
-    String id = "132123197902260016";
+    String id = "13212319790226001";
     OkHttpClient client = new OkHttpClient();
     MediaType mediaType = MediaType.parse("text/xml;charset=GBK");
     RequestBody body1 = RequestBody.create(mediaType, getXML(1, id));
@@ -77,38 +77,61 @@ public class XMLClient {
     file.createNewFile();
     BufferedWriter out = new BufferedWriter(new FileWriter(file));
     out.write("sblb\txzbz\tqsny\tzzny\tjfjs\tzdlsh\tdwbh\tdwmc\tdwjfjs\tqrsj\r\n"); // \r\n即为换行
-    int i1 = 0;
-    for (Iterator it1 = resultset1.elementIterator(); it1.hasNext(); ) {
-      Element element1 = (Element) it1.next();
-      i1 = i1 + 1;
-      System.out.println(i1);
-    }
-    String[] sblb_1 = new String[i1];
-    String[] xzbz_1 = new String[i1];
-    String[] qsny_1 = new String[i1];
-    String[] zzny_1 = new String[i1];
-    String[] jfjs_1 = new String[i1];
-    String[] zdlsh_1 = new String[i1];
-    String[] dwbh_1 = new String[i1];
-    String[] dwmc_1 = new String[i1];
-    String[] dwjfjs_1 = new String[i1];
-    int i=0;
-    for (Iterator it1 = resultset1.elementIterator(); it1.hasNext(); ) {
-      Element element1 = (Element) it1.next();
-      sblb_1[i] = element1.attributeValue("sblb");
-      i = i + 1;
-    }
-//    out.write(element1.attributeValue("sblb") + "\t");
-//    out.write(element1.attributeValue("xzbz") + "\t");
-//    out.write(element1.attributeValue("qsny") + "\t");
-//    out.write(element1.attributeValue("zzny") + "\t");
-//    out.write(element1.attributeValue("jfjs") + "\t");
-//    out.write(element1.attributeValue("zdlsh") + "\t");
-//    out.write(element1.attributeValue("dwbh") + "\t");
-//    out.write(element1.attributeValue("dwmc") + "\t");
-//    out.write(element1.attributeValue("dwjfjs") + "\t");
-//    out.write("\t\r\n");
 
+    for (Iterator it1 = resultset1.elementIterator(); it1.hasNext(); ) {
+      Element element1 = (Element) it1.next();
+      for (Iterator it2 = resultset2.elementIterator(); it2.hasNext(); ) {
+        Element element2 = (Element) it2.next();
+        if (element1.attributeValue("xzbz").equals(element2.attributeValue("xzbz"))){
+          if () {
+            out.write(element1.attributeValue("sblb") + "\t");
+            out.write(element1.attributeValue("xzbz") + "\t");
+            out.write(element1.attributeValue("qsny") + "\t");
+            out.write(element1.attributeValue("zzny") + "\t");
+            out.write(element1.attributeValue("jfjs") + "\t");
+            out.write(element1.attributeValue("zdlsh") + "\t");
+            out.write(element1.attributeValue("dwbh") + "\t");
+            out.write(element1.attributeValue("dwmc") + "\t");
+            out.write(element1.attributeValue("dwjfjs") + "\t");
+            out.write("\t\r\n");
+          }else{
+            out.write(element1.attributeValue("sblb") + "\t");
+            out.write(element1.attributeValue("xzbz") + "\t");
+            out.write(element1.attributeValue("qsny") + "\t");
+            out.write(element1.attributeValue("zzny") + "\t");
+            out.write(element1.attributeValue("jfjs") + "\t");
+            out.write(element1.attributeValue("zdlsh") + "\t");
+            out.write(element1.attributeValue("dwbh") + "\t");
+            out.write(element1.attributeValue("dwmc") + "\t");
+            out.write(element1.attributeValue("dwjfjs") + "\t");
+            out.write("\t\r\n");
+            break;
+          }
+        }else{
+          out.write(element1.attributeValue("sblb") + "\t");
+          out.write(element1.attributeValue("xzbz") + "\t");
+          out.write(element1.attributeValue("qsny") + "\t");
+          out.write(element1.attributeValue("zzny") + "\t");
+          out.write(element1.attributeValue("jfjs") + "\t");
+          out.write(element1.attributeValue("zdlsh") + "\t");
+          out.write(element1.attributeValue("dwbh") + "\t");
+          out.write(element1.attributeValue("dwmc") + "\t");
+          out.write(element1.attributeValue("dwjfjs") + "\t");
+          out.write("\t\r\n");
+          break;
+        }
+      }
+      out.write(element1.attributeValue("sblb") + "\t");
+      out.write(element1.attributeValue("xzbz") + "\t");
+      out.write(element1.attributeValue("qsny") + "\t");
+      out.write(element1.attributeValue("zzny") + "\t");
+      out.write(element1.attributeValue("jfjs") + "\t");
+      out.write(element1.attributeValue("zdlsh") + "\t");
+      out.write(element1.attributeValue("dwbh") + "\t");
+      out.write(element1.attributeValue("dwmc") + "\t");
+      out.write(element1.attributeValue("dwjfjs") + "\t");
+      out.write("\t\r\n");
+    }
     out.flush(); // 把缓存区内容压入文件
     out.close(); // 最后记得关闭文件
     IPback();
