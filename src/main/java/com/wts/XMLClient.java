@@ -8,14 +8,20 @@ import org.dom4j.Element;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 
 public class XMLClient {
 
   public static void main(String[] args) throws Exception {
+    IPset();
+    do {
+      Thread.sleep(500);
+    } while (!IPget().equals("10.153.73.166"));
+    System.out.println("切换到内网");
     String id = "132123197902260016";
     OkHttpClient client = new OkHttpClient();
-
     MediaType mediaType = MediaType.parse("text/xml;charset=GBK");
     RequestBody body1 = RequestBody.create(mediaType, getXML(1, id));
     RequestBody body2 = RequestBody.create(mediaType, getXML(2, id));
@@ -71,33 +77,42 @@ public class XMLClient {
     file.createNewFile();
     BufferedWriter out = new BufferedWriter(new FileWriter(file));
     out.write("sblb\txzbz\tqsny\tzzny\tjfjs\tzdlsh\tdwbh\tdwmc\tdwjfjs\tqrsj\r\n"); // \r\n即为换行
-    for (Iterator it = resultset1.elementIterator(); it.hasNext(); ) {
-      Element element = (Element) it.next();
-      out.write(element.attributeValue("sblb")+"\t");
-      out.write(element.attributeValue("xzbz")+"\t");
-      out.write(element.attributeValue("qsny")+"\t");
-      out.write(element.attributeValue("zzny")+"\t");
-      out.write(element.attributeValue("jfjs")+"\t");
-      out.write(element.attributeValue("zdlsh")+"\t");
-      out.write(element.attributeValue("dwbh")+"\t");
-      out.write(element.attributeValue("dwmc")+"\t");
-      out.write(element.attributeValue("dwjfjs")+"\t");
-//      out.write(element.attributeValue("qrsj")+"\t");
-      out.write("\t\r\n");
-//      System.out.println("sblb：" + element.attributeValue("sblb"));
-//      System.out.println("zdlsh：" + element.attributeValue("zdlsh"));
-//      System.out.println("qsny：" + element.attributeValue("qsny"));
-//      System.out.println("dwjfjs：" + element.attributeValue("dwjfjs"));
-//      System.out.println("jfrylb：" + element.attributeValue("jfrylb"));
-//      System.out.println("dwmc：" + element.attributeValue("dwmc"));
-//      System.out.println("jfjs：" + element.attributeValue("jfjs"));
-//      System.out.println("dwbh：" + element.attributeValue("dwbh"));
-//      System.out.println("zzny：" + element.attributeValue("zzny"));
+    int i1 = 0;
+    for (Iterator it1 = resultset1.elementIterator(); it1.hasNext(); ) {
+      Element element1 = (Element) it1.next();
+      i1 = i1 + 1;
+      System.out.println(i1);
     }
-
+    String[] sblb_1 = new String[i1];
+    String[] xzbz_1 = new String[i1];
+    String[] qsny_1 = new String[i1];
+    String[] zzny_1 = new String[i1];
+    String[] jfjs_1 = new String[i1];
+    String[] zdlsh_1 = new String[i1];
+    String[] dwbh_1 = new String[i1];
+    String[] dwmc_1 = new String[i1];
+    String[] dwjfjs_1 = new String[i1];
+    int i=0;
+    for (Iterator it1 = resultset1.elementIterator(); it1.hasNext(); ) {
+      Element element1 = (Element) it1.next();
+      sblb_1[i] = element1.attributeValue("sblb");
+      i = i + 1;
+    }
+//    out.write(element1.attributeValue("sblb") + "\t");
+//    out.write(element1.attributeValue("xzbz") + "\t");
+//    out.write(element1.attributeValue("qsny") + "\t");
+//    out.write(element1.attributeValue("zzny") + "\t");
+//    out.write(element1.attributeValue("jfjs") + "\t");
+//    out.write(element1.attributeValue("zdlsh") + "\t");
+//    out.write(element1.attributeValue("dwbh") + "\t");
+//    out.write(element1.attributeValue("dwmc") + "\t");
+//    out.write(element1.attributeValue("dwjfjs") + "\t");
+//    out.write("\t\r\n");
 
     out.flush(); // 把缓存区内容压入文件
     out.close(); // 最后记得关闭文件
+    IPback();
+    System.out.println("切换回外网");
   }
 
   // 1:正常缴费
@@ -117,11 +132,11 @@ public class XMLClient {
     sb.append("</soap:Header>");
     sb.append("<soap:Body>");
     sb.append("<in:business xmlns:in=\"http://www.molss.gov.cn/\">");
-    if (type==1) {
+    if (type == 1) {
       sb.append("<para sqlstr=\"select '01' sblb,xzbz,jfjs,dwjfjs,jfrylb,si.orgn_natl.dwbh dwbh,dwmc,substr(qsny,1,4)||'.'||substr(qsny,5) qsny,substr(zzny,1,4)||'.'||substr(zzny,5) zzny,'计划' zdlsh from si.emp_plan,si.orgn_natl where grbh='" + id + "' and si.emp_plan.dwbh=si.orgn_natl.dwbh\"/>");
-    } else if(type==2) {
-      sb.append("<para sqlstr=\"select sblb,xzbz,jfjs,dwjfjs,si.orgn_natl.dwbh dwbh,dwmc,substr(qsny,1,4)||'.'||substr(qsny,5) qsny,substr(zzny,1,4)||'.'||substr(zzny,5) zzny,nvl(zdlsh,'未填单据') zdlsh from si.emp_add,si.orgn_natl where grbh='" + id + "' and si.emp_add.dwbh=si.orgn_natl.dwbh\"/>");
-    } else if(type==3) {
+    } else if (type == 2) {
+      sb.append("<para sqlstr=\"select sblb,xzbz,jfjs,dwjfjs,si.orgn_natl.dwbh dwbh,dwmc,substr(qsny,1,4)||'.'||substr(qsny,5) qsny,substr(zzny,1,4)||'.'||substr(zzny,5) zzny,nvl(zdlsh,'未填单据') zdlsh from si.emp_add,si.orgn_natl where grbh='" + id + "' and si.emp_add.dwbh=si.orgn_natl.dwbh order by qsny,xzbz\"/>");
+    } else if (type == 3) {
       sb.append("<para sqlstr=\"select zdlsh,qrsj from si.bill_genl   where djzt='2' and zdlsh in         (select zdlsh from si.emp_add where grbh='" + id + "' and zdlsh is not null)\"/>");
     } else {
       sb.append("");
@@ -142,5 +157,21 @@ public class XMLClient {
     return sb.toString();
   }
 
+  public static String IPget() {
+    String Ip = null;
+    try {
+      Ip = InetAddress.getLocalHost().getHostAddress();
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
+    return Ip;
+  }
 
+  public static void IPset() throws Exception {
+    Runtime.getRuntime().exec("netsh    interface    ip    set    addr    \"本地连接\"    static    10.153.73.166    255.255.255.0     10.153.73.254     ");
+  }
+
+  public static void IPback() throws Exception {
+    Runtime.getRuntime().exec("netsh    interface    ip    set    address name = \"本地连接\"    source = dhcp");
+  }
 }
