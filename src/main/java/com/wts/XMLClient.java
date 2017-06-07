@@ -20,7 +20,7 @@ public class XMLClient {
       Thread.sleep(500);
     } while (!IPget().equals("10.153.73.166"));
     System.out.println("切换到内网");
-    String id = "13212319790226001";
+    String id = "132123197902260016";
     OkHttpClient client = new OkHttpClient();
     MediaType mediaType = MediaType.parse("text/xml;charset=GBK");
     RequestBody body1 = RequestBody.create(mediaType, getXML(1, id));
