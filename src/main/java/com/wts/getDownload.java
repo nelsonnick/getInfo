@@ -59,7 +59,6 @@ public class getDownload {
       for (int i = 1; i < total + 1; i++) {
         String personNumber = sheetBefore.getRow(i).getCell(0).getStringCellValue();
         String personName = sheetBefore.getRow(i).getCell(1).getStringCellValue();
-
         download(i, personNumber, personName, result);
       }
 
