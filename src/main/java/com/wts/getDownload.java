@@ -1,26 +1,84 @@
 package com.wts;
 
 import okhttp3.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-public class XMLClient {
+import static com.wts.util.*;
 
-  public static void main(String[] args) throws Exception {
-    IPset();
+public class getDownload {
+  public static void download() throws Exception {
+    System.out.println("               欢迎使用济南市社保信息批量下载程序         ");
+    System.out.println(" ");
+    System.out.println(" ");
+    System.out.println("------------------------结果说明------------------------");
+    System.out.println(" ");
+    System.out.println("1：下载结果跟公共业务子系统中的社保下载结果保持一致！");
+    System.out.println("2：下载结果为TXT文本文件！");
+    System.out.println("3：Excel文件第二列内容必须为人员姓名！");
+    System.out.println(" ");
+    System.out.println("-------------------------------------------------------");
+    System.out.println(" ");
+    String result;
     do {
-      Thread.sleep(500);
-    } while (!IPget().equals("10.153.73.166"));
-    System.out.println("切换到内网");
-    String id = "132123197902260016";
+      // 输出提示文字
+      System.out.print("请输入待下载的Excel文件名：");
+      InputStreamReader is_reader = new InputStreamReader(System.in);
+      result = new BufferedReader(is_reader).readLine();
+    } while (result.equals("")); // 当用户输入无效的时候，反复提示要求用户输入
+    File file = new File("C:\\" + result + ".xlsx");
+    if (!file.exists()) {
+      System.out.print("C:\\" + result + ".xlsx文件不存在！");
+      System.out.print("按回车关闭程序...");
+      while (true) {
+        if (System.in.read() == '\n')
+          System.exit(0);
+      }
+    } else {
+      IPset();
+      do {
+        Thread.sleep(500);
+      } while (!IPget().equals("10.153.73.166"));
+      System.out.println("切换到内网");
+
+      XSSFWorkbook workbookBefore = new XSSFWorkbook(new FileInputStream("c:\\" + result + ".xlsx"));
+      XSSFSheet sheetBefore = workbookBefore.getSheetAt(0);
+      int total = sheetBefore.getLastRowNum();
+      //  创建文件夹
+      File files = new File("C:/"+result);
+      files.mkdir();
+      copyFile("c:\\" + result + ".xlsx","c:/"+result+"/" + result + ".xlsx");
+      for (int i = 1; i < total + 1; i++) {
+        String personNumber = sheetBefore.getRow(i).getCell(0).getStringCellValue();
+        String personName = sheetBefore.getRow(i).getCell(1).getStringCellValue();
+        System.out.println("正在下载第"+i+"行人员，身份证号码为："+personNumber+"，姓名为："+personName);
+        download(personNumber,personName,result);
+      }
+
+      IPback();
+      System.out.println("切换回外网");
+      System.out.println("  ");
+      System.out.println("  ");
+      System.out.println("社保数据下载完成！");
+      System.out.println("请查看下载后的文件--> c:\\" + result + "\\");
+      System.out.println("  ");
+      System.out.println("按回车键退出程序...");
+      while (true) {
+        if (System.in.read() == '\n')
+          System.exit(0);
+      }
+    }
+  }
+  public static void download(String id,String name,String result) throws Exception {
+
     OkHttpClient client = new OkHttpClient();
     MediaType mediaType = MediaType.parse("text/xml;charset=GBK");
     RequestBody body1 = RequestBody.create(mediaType, getXML(1, id));
@@ -69,7 +127,16 @@ public class XMLClient {
     Element resultset2 = rootElement2.element("Body").element("business").element("resultset");
     Element resultset3 = rootElement3.element("Body").element("business").element("resultset");
 
-    String fileName = "c:/" + id + ".txt";
+    List<Element> elements2 = new ArrayList<Element>();
+    List<Element> elements3 = new ArrayList<Element>();
+
+    for (Iterator it = resultset2.elementIterator(); it.hasNext(); ) {
+      elements2.add((Element) it.next());
+    }
+    for (Iterator it = resultset3.elementIterator(); it.hasNext(); ) {
+      elements3.add((Element) it.next());
+    }
+    String fileName = "c:/" + result + "/" + id + name+".txt";
     File file = new File(fileName);
     if (file.exists() && file.isFile()) {
       file.delete();
@@ -78,64 +145,40 @@ public class XMLClient {
     BufferedWriter out = new BufferedWriter(new FileWriter(file));
     out.write("sblb\txzbz\tqsny\tzzny\tjfjs\tzdlsh\tdwbh\tdwmc\tdwjfjs\tqrsj\r\n"); // \r\n即为换行
 
-    for (Iterator it1 = resultset1.elementIterator(); it1.hasNext(); ) {
-      Element element1 = (Element) it1.next();
-      for (Iterator it2 = resultset2.elementIterator(); it2.hasNext(); ) {
-        Element element2 = (Element) it2.next();
-        if (element1.attributeValue("xzbz").equals(element2.attributeValue("xzbz"))){
-          if () {
-            out.write(element1.attributeValue("sblb") + "\t");
-            out.write(element1.attributeValue("xzbz") + "\t");
-            out.write(element1.attributeValue("qsny") + "\t");
-            out.write(element1.attributeValue("zzny") + "\t");
-            out.write(element1.attributeValue("jfjs") + "\t");
-            out.write(element1.attributeValue("zdlsh") + "\t");
-            out.write(element1.attributeValue("dwbh") + "\t");
-            out.write(element1.attributeValue("dwmc") + "\t");
-            out.write(element1.attributeValue("dwjfjs") + "\t");
-            out.write("\t\r\n");
-          }else{
-            out.write(element1.attributeValue("sblb") + "\t");
-            out.write(element1.attributeValue("xzbz") + "\t");
-            out.write(element1.attributeValue("qsny") + "\t");
-            out.write(element1.attributeValue("zzny") + "\t");
-            out.write(element1.attributeValue("jfjs") + "\t");
-            out.write(element1.attributeValue("zdlsh") + "\t");
-            out.write(element1.attributeValue("dwbh") + "\t");
-            out.write(element1.attributeValue("dwmc") + "\t");
-            out.write(element1.attributeValue("dwjfjs") + "\t");
-            out.write("\t\r\n");
-            break;
-          }
-        }else{
-          out.write(element1.attributeValue("sblb") + "\t");
-          out.write(element1.attributeValue("xzbz") + "\t");
-          out.write(element1.attributeValue("qsny") + "\t");
-          out.write(element1.attributeValue("zzny") + "\t");
-          out.write(element1.attributeValue("jfjs") + "\t");
-          out.write(element1.attributeValue("zdlsh") + "\t");
-          out.write(element1.attributeValue("dwbh") + "\t");
-          out.write(element1.attributeValue("dwmc") + "\t");
-          out.write(element1.attributeValue("dwjfjs") + "\t");
-          out.write("\t\r\n");
+    for (Iterator it = resultset1.elementIterator(); it.hasNext(); ) {
+      Element element=(Element) it.next();
+      out.write(element.attributeValue("sblb") + "\t");
+      out.write(element.attributeValue("xzbz") + "\t");
+      out.write(element.attributeValue("qsny") + "\t");
+      out.write(element.attributeValue("zzny") + "\t");
+      out.write(element.attributeValue("jfjs") + "\t");
+      out.write(element.attributeValue("zdlsh") + "\t");
+      out.write(element.attributeValue("dwbh") + "\t");
+      out.write(element.attributeValue("dwmc") + "\t");
+      out.write(element.attributeValue("dwjfjs") + "\t");
+      out.write("\t\r\n");
+    }
+    for (int m=0;m<elements2.size();m++) {
+      out.write(elements2.get(m).attributeValue("sblb") + "\t");
+      out.write(elements2.get(m).attributeValue("xzbz") + "\t");
+      out.write(elements2.get(m).attributeValue("qsny") + "\t");
+      out.write(elements2.get(m).attributeValue("zzny") + "\t");
+      out.write(elements2.get(m).attributeValue("jfjs") + "\t");
+      out.write(elements2.get(m).attributeValue("zdlsh") + "\t");
+      out.write(elements2.get(m).attributeValue("dwbh") + "\t");
+      out.write(elements2.get(m).attributeValue("dwmc") + "\t");
+      out.write(elements2.get(m).attributeValue("dwjfjs") + "\t");
+      for (int n=0;n<elements3.size();n++) {
+        if (elements2.get(m).attributeValue("zdlsh").equals(elements3.get(n).attributeValue("zdlsh"))){
+          out.write(getTime(elements3.get(n).attributeValue("qrsj")) + "\t");
           break;
         }
       }
-      out.write(element1.attributeValue("sblb") + "\t");
-      out.write(element1.attributeValue("xzbz") + "\t");
-      out.write(element1.attributeValue("qsny") + "\t");
-      out.write(element1.attributeValue("zzny") + "\t");
-      out.write(element1.attributeValue("jfjs") + "\t");
-      out.write(element1.attributeValue("zdlsh") + "\t");
-      out.write(element1.attributeValue("dwbh") + "\t");
-      out.write(element1.attributeValue("dwmc") + "\t");
-      out.write(element1.attributeValue("dwjfjs") + "\t");
-      out.write("\t\r\n");
+      out.write("\r\n");
     }
     out.flush(); // 把缓存区内容压入文件
     out.close(); // 最后记得关闭文件
-    IPback();
-    System.out.println("切换回外网");
+
   }
 
   // 1:正常缴费
@@ -180,21 +223,6 @@ public class XMLClient {
     return sb.toString();
   }
 
-  public static String IPget() {
-    String Ip = null;
-    try {
-      Ip = InetAddress.getLocalHost().getHostAddress();
-    } catch (UnknownHostException e) {
-      e.printStackTrace();
-    }
-    return Ip;
-  }
 
-  public static void IPset() throws Exception {
-    Runtime.getRuntime().exec("netsh    interface    ip    set    addr    \"本地连接\"    static    10.153.73.166    255.255.255.0     10.153.73.254     ");
-  }
 
-  public static void IPback() throws Exception {
-    Runtime.getRuntime().exec("netsh    interface    ip    set    address name = \"本地连接\"    source = dhcp");
-  }
 }

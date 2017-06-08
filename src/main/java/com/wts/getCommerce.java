@@ -17,6 +17,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.net.URI;
 
+import static com.wts.util.IPback;
+import static com.wts.util.IPget;
+import static com.wts.util.IPset;
+
 public class getCommerce {
 
     /**
@@ -104,6 +108,11 @@ public class getCommerce {
                     System.exit(0);
             }
         } else {
+            IPset();
+            do {
+                Thread.sleep(500);
+            } while (!IPget().equals("10.153.73.166"));
+            System.out.println("切换到内网");
             URI loginUri = new URIBuilder()
                     .setScheme("http")
                     .setHost("10.153.50.108:7001")
@@ -169,6 +178,8 @@ public class getCommerce {
             FileOutputStream os = new FileOutputStream("c:\\" + result + "_工商数据抓取后.xlsx");
             workbookAfter.write(os);
             os.close();
+            IPback();
+            System.out.println("切换回外网");
             System.out.println("  ");
             System.out.println("  ");
             System.out.println("工商数据抓取完成！");
