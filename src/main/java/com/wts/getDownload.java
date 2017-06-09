@@ -83,7 +83,7 @@ public class getDownload {
 //        download(i, personNumber, personName, result);
 //      }
 
-      IPback();
+      //IPback();
       System.out.println("切换回外网");
       System.out.println("  ");
       System.out.println("  ");
