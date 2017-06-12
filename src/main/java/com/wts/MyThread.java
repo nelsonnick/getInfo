@@ -21,6 +21,7 @@ public class MyThread extends Thread {
     private Integer start;
     private Integer end;
     private XSSFSheet sheet;
+    public volatile boolean exit = false;
 
     public MyThread(String result, Integer start, Integer end, XSSFSheet sheet) {
         this.result = result;
@@ -142,7 +143,7 @@ public class MyThread extends Thread {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
+        this.exit = true;
     }
 
     // 1:正常缴费
