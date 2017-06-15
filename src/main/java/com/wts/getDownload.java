@@ -24,6 +24,7 @@ public class getDownload {
     System.out.println("1：下载结果跟公共业务子系统中的社保下载结果保持一致！");
     System.out.println("2：下载结果为TXT文本文件！");
     System.out.println("3：Excel文件第二列内容必须为人员姓名！");
+    System.out.println("4：下载过程采用多线程，多核CPU有额外优势！");
     System.out.println(" ");
     System.out.println("-------------------------------------------------------");
     System.out.println(" ");
@@ -77,31 +78,26 @@ public class getDownload {
       t2.start();
       t3.start();
       t4.start();
-      while (!t1.isAlive() && !t2.isAlive() && !t3.isAlive() && !t4.isAlive()){
-        System.out.println(t1.exit);
-        System.out.println(t2.exit);
-        System.out.println(t3.exit);
-        System.out.println(t4.exit);
-        System.out.println("社保数据下载完成！");
-        IPback();
-      }
+      do {
+      }while (!(t1.exit && t2.exit && t3.exit && t4.exit));
+
       //      for (int i = 1; i < total1; i++) {
 //        String personNumber = sheetBefore.getRow(i).getCell(0).getStringCellValue();
 //        String personName = sheetBefore.getRow(i).getCell(1).getStringCellValue();
 //        download(i, personNumber, personName, result);
 //      }
 
-      //IPback();
-//      System.out.println("切换回外网");
-//      System.out.println("  ");
-//      System.out.println("  ");
-//      System.out.println("请查看下载后的文件--> c:\\" + result + "\\");
-//      System.out.println("  ");
-//      System.out.println("按回车键退出程序...");
-//      while (true) {
-//        if (System.in.read() == '\n')
-//          System.exit(0);
-//      }
+      IPback();
+      System.out.println("切换回外网");
+      System.out.println("  ");
+      System.out.println("  ");
+      System.out.println("请查看下载后的文件--> c:\\" + result + "\\");
+      System.out.println("  ");
+      System.out.println("按回车键退出程序...");
+      while (true) {
+        if (System.in.read() == '\n')
+          System.exit(0);
+      }
     }
   }
 
