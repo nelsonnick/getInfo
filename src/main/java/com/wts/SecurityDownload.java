@@ -1,20 +1,13 @@
 package com.wts;
 
-import okhttp3.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import static com.wts.util.*;
 
-public class getDownload {
+public class SecurityDownload {
   public static void download() throws Exception {
     System.out.println("               欢迎使用济南市社保信息批量下载程序         ");
     System.out.println(" ");
@@ -67,13 +60,13 @@ public class getDownload {
 
 
       //  创建文件夹
-      File files = new File("C:/" + result);
+      File files = new File("C:/" + result+ "_社保下载数据");
       files.mkdir();
-      copyFile("c:\\" + result + ".xlsx", "c:/" + result + "/" + result + ".xlsx");
-      MyThread t1 = new MyThread(result,1,total1,sheetBefore);
-      MyThread t2 = new MyThread(result,total1,total2,sheetBefore);
-      MyThread t3 = new MyThread(result,total2,total3,sheetBefore);
-      MyThread t4 = new MyThread(result,total3,total+1,sheetBefore);
+      copyFile("c:\\" + result + ".xlsx", "c:/" + result + "_社保下载数据/" + result + ".xlsx");
+      SecurityThread t1 = new SecurityThread(result,1,total1,sheetBefore);
+      SecurityThread t2 = new SecurityThread(result,total1,total2,sheetBefore);
+      SecurityThread t3 = new SecurityThread(result,total2,total3,sheetBefore);
+      SecurityThread t4 = new SecurityThread(result,total3,total+1,sheetBefore);
       t1.start();
       t2.start();
       t3.start();

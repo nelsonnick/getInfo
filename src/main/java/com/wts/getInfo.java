@@ -4,10 +4,10 @@ package com.wts;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import static com.wts.getCommerce.commerce;
-import static com.wts.getDownload.download;
-import static com.wts.getSecurity.security;
-import static com.wts.goAnalysis.analysis;
+import static com.wts.CommerceGet.commerce;
+import static com.wts.SecurityDownload.download;
+import static com.wts.SecurityGet.security;
+import static com.wts.SecurityAnalysis.analysis;
 
 public class getInfo {
     public static void main(String[] args) throws Exception{

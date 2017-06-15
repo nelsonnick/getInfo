@@ -21,7 +21,7 @@ import static com.wts.util.IPback;
 import static com.wts.util.IPget;
 import static com.wts.util.IPset;
 
-public class getCommerce {
+public class CommerceGet {
 
     /**
      * 保存记录

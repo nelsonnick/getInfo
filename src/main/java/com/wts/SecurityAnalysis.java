@@ -8,7 +8,7 @@ import java.io.*;
 
 import static com.wts.util.getSecurity;
 
-public class goAnalysis {
+public class SecurityAnalysis {
   public static void analysis() throws Exception {
 
     System.out.println("               欢迎使用社保信息分析程序         ");

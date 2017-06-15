@@ -16,14 +16,14 @@ import java.util.List;
 
 import static com.wts.util.getTime;
 
-public class MyThread extends Thread {
+public class SecurityThread extends Thread {
     private String result;
     private Integer start;
     private Integer end;
     private XSSFSheet sheet;
     public volatile boolean exit = false;
 
-    public MyThread(String result, Integer start, Integer end, XSSFSheet sheet) {
+    public SecurityThread(String result, Integer start, Integer end, XSSFSheet sheet) {
         this.result = result;
         this.start = start;
         this.end = end;
@@ -36,7 +36,7 @@ public class MyThread extends Thread {
                 String id = sheet.getRow(j).getCell(0).getStringCellValue();
                 String name = sheet.getRow(j).getCell(1).getStringCellValue();
 
-                String fileName = "c:/" + result + "/" + id + name + ".txt";
+                String fileName = "c:/" + result + "_社保下载数据/" + id + name + ".txt";
                 File file = new File(fileName);
                 if (!file.exists()) {
                     System.out.println("正在下载第" + j + "行人员，身份证号码为：" + id + "，姓名为：" + name);

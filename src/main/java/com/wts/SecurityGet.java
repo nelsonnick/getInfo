@@ -21,7 +21,7 @@ import static com.wts.util.IPset;
 import static com.wts.util.IPget;
 import static com.wts.util.getCharacterPosition;
 
-public class getSecurity {
+public class SecurityGet {
 
     /**
      * 保存记录
