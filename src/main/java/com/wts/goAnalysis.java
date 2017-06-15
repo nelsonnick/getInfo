@@ -18,7 +18,6 @@ public class goAnalysis {
     System.out.println(" ");
     System.out.println("1：用于分析本程序从《公共业务子系统》中下载的TXT文件！");
     System.out.println("2：Excel文件第一列为身份证号码，第二列内容必须为人员姓名！");
-    System.out.println("3：！");
     System.out.println(" ");
     System.out.println("-------------------------------------------------------");
     System.out.println(" ");
