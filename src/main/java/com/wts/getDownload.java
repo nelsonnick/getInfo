@@ -23,7 +23,7 @@ public class getDownload {
     System.out.println(" ");
     System.out.println("1：下载结果跟公共业务子系统中的社保下载结果保持一致！");
     System.out.println("2：下载结果为TXT文本文件！");
-    System.out.println("3：Excel文件第二列内容必须为人员姓名！");
+    System.out.println("3：Excel文件第一列为身份证号码，第二列内容必须为人员姓名！");
     System.out.println("4：下载过程采用多线程，多核CPU有额外优势！");
     System.out.println(" ");
     System.out.println("-------------------------------------------------------");

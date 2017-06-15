@@ -113,7 +113,8 @@ public class MyThread extends Thread {
                         out.write(element.attributeValue("dwbh") + "\t");
                         out.write(element.attributeValue("dwmc") + "\t");
                         out.write(element.attributeValue("dwjfjs") + "\t");
-                        out.write("\t\r\n");
+                        out.write(" " + "\t");
+                        out.write("\r\n");
                     }
                     for (int m = 0; m < elements2.size(); m++) {
                         out.write(elements2.get(m).attributeValue("sblb") + "\t");

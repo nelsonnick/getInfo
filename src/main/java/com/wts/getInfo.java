@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import static com.wts.getCommerce.commerce;
 import static com.wts.getDownload.download;
 import static com.wts.getSecurity.security;
+import static com.wts.goAnalysis.analysis;
 
 public class getInfo {
     public static void main(String[] args) throws Exception{
@@ -29,6 +30,7 @@ public class getInfo {
         System.out.println("1、核查工商信息--劳动993");
         System.out.println("2、核查社保信息--劳动993");
         System.out.println("3、下载社保信息--公共业务子系统");
+        System.out.println("4、分析社保信息--公共业务子系统");
         System.out.println(" ");
         String result;
         do {
@@ -36,13 +38,15 @@ public class getInfo {
             System.out.print("请输入：");
             InputStreamReader is_reader = new InputStreamReader(System.in);
             result = new BufferedReader(is_reader).readLine();
-        } while (!result.equals("1") && !result.equals("2") && !result.equals("3")); // 当用户输入无效的时候，反复提示要求用户输入
+        } while (!result.equals("1") && !result.equals("2") && !result.equals("3") && !result.equals("4")); // 当用户输入无效的时候，反复提示要求用户输入
         if (result.equals("1")){
             commerce();
         }else if (result.equals("2")){
             security();
         }else if (result.equals("3")){
             download();
+        }else if (result.equals("4")){
+            analysis();
         }
     }
 }
