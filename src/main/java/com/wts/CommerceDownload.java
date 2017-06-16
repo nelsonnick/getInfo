@@ -21,7 +21,7 @@ public class CommerceDownload {
     System.out.println("2：下载结果为TXT文本文件！");
     System.out.println("3：Excel文件第一列为身份证号码，第二列内容必须为人员姓名！");
     System.out.println("4：下载过程采用多线程，多核CPU有额外优势！");
-    System.out.println("5：下载速度约每分钟600人次，单次下载超过1000人时，系统服务器可能会无法响应，有必要时请重新启动程序！");
+    System.out.println("5：下载速度约每分钟600人次，但单次下载超过800人时，系统服务器可能会无法响应。有必要时请重新启动程序！");
     System.out.println(" ");
     System.out.println("-------------------------------------------------------");
     System.out.println(" ");
