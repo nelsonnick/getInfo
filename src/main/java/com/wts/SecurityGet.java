@@ -167,11 +167,11 @@ public class SecurityGet {
                     System.exit(0);
             }
         } else {
-          IPset();
-          do {
-            Thread.sleep(500);
-          } while (!IPget().equals("10.153.73.166"));
-          System.out.println("切换到内网");
+//          IPset();
+//          do {
+//            Thread.sleep(500);
+//          } while (!IPget().equals("10.153.73.166"));
+//          System.out.println("切换到内网");
             URI loginUri = new URIBuilder()
                     .setScheme("http")
                     .setHost("10.153.50.108:7001")
@@ -227,8 +227,8 @@ public class SecurityGet {
             FileOutputStream os = new FileOutputStream("c:\\" + result + "_社保数据抓取后.xlsx");
             workbookAfter.write(os);
             os.close();
-            IPback();
-            System.out.println("切换回外网");
+//            IPback();
+//            System.out.println("切换回外网");
             System.out.println("  ");
             System.out.println("  ");
             System.out.println("社保数据抓取完成！");

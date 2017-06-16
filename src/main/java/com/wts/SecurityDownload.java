@@ -37,11 +37,11 @@ public class SecurityDownload {
           System.exit(0);
       }
     } else {
-      IPset();
-      do {
-        Thread.sleep(500);
-      } while (!IPget().equals("10.153.73.166"));
-      System.out.println("切换到内网");
+//      IPset();
+//      do {
+//        Thread.sleep(500);
+//      } while (!IPget().equals("10.153.73.166"));
+//      System.out.println("切换到内网");
 
       XSSFWorkbook workbookBefore = new XSSFWorkbook(new FileInputStream("c:\\" + result + ".xlsx"));
       XSSFSheet sheetBefore = workbookBefore.getSheetAt(0);
@@ -100,8 +100,8 @@ public class SecurityDownload {
 //        download(i, personNumber, personName, result);
 //      }
 
-      IPback();
-      System.out.println("切换回外网");
+//      IPback();
+//      System.out.println("切换回外网");
       System.out.println("  ");
       System.out.println("  ");
       System.out.println("请查看下载后的文件--> c:/" + result + "_社保下载数据/");
