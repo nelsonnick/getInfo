@@ -46,34 +46,54 @@ public class SecurityDownload {
       XSSFWorkbook workbookBefore = new XSSFWorkbook(new FileInputStream("c:\\" + result + ".xlsx"));
       XSSFSheet sheetBefore = workbookBefore.getSheetAt(0);
       int total = sheetBefore.getLastRowNum();
-      int total1,total2,total3;
-      if (total<4) {
+      int total1,total2,total3,total4,total5,total6,total7;
+      if (total<8) {
         total1=total;
         total2=0;
         total3=0;
+        total4=0;
+        total5=0;
+        total6=0;
+        total7=0;
       }else{
-        total1=(int)Math.ceil(total/4)+1;
-        total2=(int)Math.ceil(total/4)*2+1;
-        total3=(int)Math.ceil(total/4)*3+1;
+        total1=(int)Math.ceil(total/8)+1;
+        total2=(int)Math.ceil(total/8)*2+1;
+        total3=(int)Math.ceil(total/8)*3+1;
+        total4=(int)Math.ceil(total/8)*4+1;
+        total5=(int)Math.ceil(total/8)*5+1;
+        total6=(int)Math.ceil(total/8)*6+1;
+        total7=(int)Math.ceil(total/8)*7+1;
       }
-
-
 
       //  创建文件夹
       File files = new File("C:/" + result+ "_社保下载数据");
       files.mkdir();
       copyFile("c:\\" + result + ".xlsx", "c:/" + result + "_社保下载数据/" + result + ".xlsx");
-      SecurityThread t1 = new SecurityThread(result,1,total1,sheetBefore);
-      SecurityThread t2 = new SecurityThread(result,total1,total2,sheetBefore);
-      SecurityThread t3 = new SecurityThread(result,total2,total3,sheetBefore);
-      SecurityThread t4 = new SecurityThread(result,total3,total+1,sheetBefore);
-      t1.start();
-      t2.start();
-      t3.start();
-      t4.start();
-      do {
-      }while (!(t1.exit && t2.exit && t3.exit && t4.exit));
-
+      if (total>8) {
+        SecurityThread t1 = new SecurityThread(result, 1, total1, sheetBefore);
+        SecurityThread t2 = new SecurityThread(result, total1, total2, sheetBefore);
+        SecurityThread t3 = new SecurityThread(result, total2, total3, sheetBefore);
+        SecurityThread t4 = new SecurityThread(result, total3, total4, sheetBefore);
+        SecurityThread t5 = new SecurityThread(result, total4, total5, sheetBefore);
+        SecurityThread t6 = new SecurityThread(result, total5, total6, sheetBefore);
+        SecurityThread t7 = new SecurityThread(result, total6, total7, sheetBefore);
+        SecurityThread t8 = new SecurityThread(result, total7, total + 1, sheetBefore);
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+        t5.start();
+        t6.start();
+        t7.start();
+        t8.start();
+        do {
+        } while (!(t1.exit && t2.exit && t3.exit && t4.exit && t5.exit && t6.exit && t7.exit && t8.exit));
+      }else{
+        SecurityThread t = new SecurityThread(result, 1, total, sheetBefore);
+        t.start();
+        do {
+        } while (!t.exit);
+      }
       //      for (int i = 1; i < total1; i++) {
 //        String personNumber = sheetBefore.getRow(i).getCell(0).getStringCellValue();
 //        String personName = sheetBefore.getRow(i).getCell(1).getStringCellValue();
@@ -84,7 +104,7 @@ public class SecurityDownload {
       System.out.println("切换回外网");
       System.out.println("  ");
       System.out.println("  ");
-      System.out.println("请查看下载后的文件--> c:\\" + result + "\\");
+      System.out.println("请查看下载后的文件--> c:/" + result + "_社保下载数据/");
       System.out.println("  ");
       System.out.println("按回车键退出程序...");
       while (true) {

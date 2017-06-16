@@ -137,7 +137,7 @@ public class SecurityThread extends Thread {
                     out.flush(); // 把缓存区内容压入文件
                     out.close(); // 最后记得关闭文件
                 } else {
-                    System.out.println("第" + j + "行人员，身份证号码为：" + id + "，姓名为：" + name + "的数据已下载");
+                    System.out.println("第" + j + "行人员，身份证号码为：" + id + "，姓名为：" + name + "的社保数据已下载");
                 }
                 super.run();
             }
