@@ -40,6 +40,58 @@ public class Demo {
     }
   }
 
+
+  /**
+   * 查找人员第一页
+   */
+  private static String getPerson(CloseableHttpClient client, String tableMark) throws Exception {
+    URI u = new URIBuilder()
+            .setScheme("http")
+            .setHost("10.153.50.108:7001")
+            .setPath("/lemis3/lemis3SuccorOrgAdmit.do")
+            .setParameter("method", "queryAdmitPer")
+            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s dwbh=\"\" dwmc=\"\" sftc=\"0\" gmsfhm=\"\" grxm=\"\" grbh=\"\" sfbl=\"\" sfyba=\"\" /></p>")
+            .setParameter("tableMark", tableMark)
+            .setParameter("_jbjgqxfw", "undefined")
+            .setParameter("_sbjbjg", "undefined")
+            .setParameter("_dwqxfw", "undefined")
+            .build();
+    HttpPost post = new HttpPost(u);
+    CloseableHttpResponse response = client.execute(post);
+    HttpEntity entity = response.getEntity();
+    String res = EntityUtils.toString(entity, "UTF-8");
+    String start = "init('true','true','[";
+    String end = "]');columninput";
+    String pageStart = "记录&nbsp;&nbsp;&nbsp;&nbsp;1/";
+    String pageEnd = "页</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    return res.substring(res.indexOf(start) + 20, res.indexOf(end)) +":"+ res.substring(res.indexOf(pageStart) + 28, res.indexOf(pageEnd));
+
+  }
+
+  /**
+   * 查找人员第N页
+   */
+  private static String getPersonPage(CloseableHttpClient client, String tableMark, Integer nextPage) throws Exception {
+    URI u = new URIBuilder()
+            .setScheme("http")
+            .setHost("10.153.50.108:7001")
+            .setPath("/lemis3/pilot.do")
+            .setParameter("method", "view")
+            .setParameter("nextPage", nextPage)
+            .setParameter("tableMark", tableMark)
+            .setParameter("_jbjgqxfw", "undefined")
+            .setParameter("_sbjbjg", "undefined")
+            .setParameter("_dwqxfw", "undefined")
+            .build();
+    HttpPost post = new HttpPost(u);
+    CloseableHttpResponse response = client.execute(post);
+    HttpEntity entity = response.getEntity();
+    String res = EntityUtils.toString(entity, "UTF-8");
+    String start = "init('true','true','[";
+    String end = "]');columninput";
+    return res.substring(res.indexOf(start) + 20, res.indexOf(end)) ;
+  }
+
   /**
    * 点击查找，获取grbh
    */
@@ -95,9 +147,10 @@ public class Demo {
   }
 
   /**
-   * 获取流水号
+   * 获取登记流水号
    */
-  private static String getDjlsh(CloseableHttpClient client, String grxm, String gmsfhm, String grbh, String datawindow) throws Exception {
+  private static String getDjlsh(CloseableHttpClient client, String gmsfhm, String grbh, String datawindow) throws Exception {
+    String grxm = "";
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
@@ -113,7 +166,6 @@ public class Demo {
     CloseableHttpResponse response = client.execute(post);
     HttpEntity entity = response.getEntity();
     String res = EntityUtils.toString(entity, "UTF-8");
-
     String start = "init('true','true','[";
     String end = "]');columninput";
     String djlsh = "";
@@ -130,7 +182,8 @@ public class Demo {
   /**
    * 获取剩余月数
    */
-  private static String getSyys(CloseableHttpClient client, String grxm, String gmsfhm, String grbh, String djlsh) throws Exception {
+  private static String getSyys(CloseableHttpClient client, String gmsfhm, String grbh, String djlsh) throws Exception {
+    String grxm = "";
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
@@ -157,7 +210,8 @@ public class Demo {
   /**
    * 生成补贴
    */
-  private static String creatMoney(CloseableHttpClient client, String grxm, String gmsfhm, String grbh, String djlsh, String qsny, String zzny) throws Exception {
+  private static String creatMoney(CloseableHttpClient client, String gmsfhm, String grbh, String djlsh, String qsny, String zzny) throws Exception {
+    String grxm = "";
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
@@ -184,13 +238,14 @@ public class Demo {
   /**
    * 保存补贴
    */
-  private static String saveMoney(CloseableHttpClient client, String grxm, String gmsfhm, String grbh, String djlsh, String qsny, String zzny, String syys, String yanglaobz, String yiliaobz, String shiyebz, String gangweibz) throws Exception {
+  private static String saveMoney(CloseableHttpClient client, String gmsfhm, String grbh, String djlsh, String qsny, String zzny, String syys, String yanglaobz, String yiliaobz, String shiyebz, String gangweibz, String sfyxyq, String sfyxffylbt, String sfyxffyilbt) throws Exception {
+    String grxm = "";
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
             .setPath("/lemis3/lemis3MeritStation.do")
             .setParameter("method", "saveBonusAddForSinglePer")
-            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s grbh=\"" + grbh + "\" msg=\"\" grxm=\"" + grxm + "\" gmsfhm=\"" + gmsfhm + "\" djlsh=\"" + djlsh + "\" btrylb=\"01\" syys=\"" + syys + "\" qsny=\"" + qsny + "\" zzny=\"" + zzny + "\" /><d k=\"dw_xzbt\"><r qsny=\"" + qsny + "\" zzny=\"" + zzny + "\" sfyxyq=\"0\" sfyxffylbt=\"1\" sfyxffyilbt=\"1\" yanglaobz=\"" + yanglaobz + "\" yiliaobz=\"" + yiliaobz + "\" shiyebz=\"" + shiyebz + "\" gangweibz=\"" + gangweibz + "\" /></d></p>")
+            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s grbh=\"" + grbh + "\" msg=\"\" grxm=\"" + grxm + "\" gmsfhm=\"" + gmsfhm + "\" djlsh=\"" + djlsh + "\" btrylb=\"01\" syys=\"" + syys + "\" qsny=\"" + qsny + "\" zzny=\"" + zzny + "\" /><d k=\"dw_xzbt\"><r qsny=\"" + qsny + "\" zzny=\"" + zzny + "\" sfyxyq=\"" + sfyxyq + "\" sfyxffylbt=\"" + sfyxffylbt + "\" sfyxffyilbt=\"" + sfyxffyilbt + "\" yanglaobz=\"" + yanglaobz + "\" yiliaobz=\"" + yiliaobz + "\" shiyebz=\"" + shiyebz + "\" gangweibz=\"" + gangweibz + "\" /></d></p>")
             .setParameter("_jbjgqxfw", "undefined")
             .setParameter("_sbjbjg", "undefined")
             .setParameter("_dwqxfw", "undefined")
@@ -201,48 +256,74 @@ public class Demo {
     String res = EntityUtils.toString(entity, "UTF-8");
     String start = "alert('";
     String end = "');";
-    return res.substring(res.indexOf(start) + 7, res.indexOf(end) + 1);
+    return res.substring(res.indexOf(start) + 7, res.indexOf(end));
   }
 
   /**
-   * 发起请求
+   * 查找
    */
-  private static String getA(CloseableHttpClient client, String grxm, String gmsfhm, String qsny, String zzny) throws Exception {
+  private static String goGet(CloseableHttpClient client) throws Exception {
+    String datawindow = openWindow(client);
+    if (datawindow.equals("")) {
+      return "无法打开窗口！";
+    }
+    String person = getPerson(client,datawindow);
+
+    String personNext = getPersonPage(client,datawindow,2);
+
+
+
+
+    return person;
+  }
+
+
+  /**
+   * 保存
+   */
+  private static String goSave(CloseableHttpClient client, String grxm, String gmsfhm, String month) throws Exception {
 
     String datawindow = openWindow(client);
     if (datawindow.equals("")) {
       return "无法打开窗口！";
     }
+    //System.out.println(datawindow);
     String grbh = getGrbh(client, gmsfhm);
     if (grbh.equals("")) {
       return "无法获取个人编号！";
     }
-    String djlsh = getDjlsh(client, grxm, gmsfhm, grbh, datawindow);
+    //System.out.println(grbh);
+    String djlsh = getDjlsh(client, gmsfhm, grbh, datawindow);
     if (djlsh.equals("")) {
       return "无法获取登记流水号！";
     }
-    String syys = getSyys(client, grxm, gmsfhm, grbh, djlsh);
+    //System.out.println(djlsh);
+    String syys = getSyys(client, gmsfhm, grbh, djlsh);
     if (syys.equals("0")) {
       return "剩余补贴月数为零！";
     }
-    JSONArray jsStrs = JSONArray.fromObject(creatMoney(client, grxm, gmsfhm, grbh, djlsh, qsny, zzny));
-    String shiyebz = "", yiliaobz = "", yanglaobz = "", gangweibz = "", sfyxyq = "", sfyxffylbt = "", sfyxffyilbt = "";
-    if (jsStrs.size() > 0) {
-      JSONObject jsStr = jsStrs.getJSONObject(0);
-      shiyebz = jsStr.getString("shiyebz");
-      yiliaobz = jsStr.getString("yiliaobz");
-      yanglaobz = jsStr.getString("yanglaobz");
-      gangweibz = jsStr.getString("gangweibz");
-      sfyxyq = jsStr.getString("sfyxyq");
-      sfyxffylbt = jsStr.getString("sfyxffylbt");
-      sfyxffyilbt = jsStr.getString("sfyxffyilbt");
-      String res = saveMoney(client, grxm, gmsfhm, grbh, djlsh, qsny, zzny, syys, yanglaobz, yiliaobz, shiyebz, gangweibz);
-      return res;
-    } else {
-      return "无法生成补贴！";
+    //System.out.println(syys);
+    String creat = creatMoney(client, gmsfhm, grbh, djlsh, month, month);
+    if (creat.equals("[]")) {
+      return month + "的补贴已录入";
     }
+    //System.out.println(creat);
+    JSONArray jsStrs = JSONArray.fromObject(creat);
+    String shiyebz = "", yiliaobz = "", yanglaobz = "", gangweibz = "", sfyxyq = "", sfyxffylbt = "", sfyxffyilbt = "";
 
-
+    JSONObject jsStr = jsStrs.getJSONObject(0);
+    shiyebz = jsStr.getString("shiyebz");
+    yiliaobz = jsStr.getString("yiliaobz");
+    yanglaobz = jsStr.getString("yanglaobz");
+    gangweibz = jsStr.getString("gangweibz");
+    sfyxyq = jsStr.getString("sfyxyq");
+    sfyxffylbt = jsStr.getString("sfyxffylbt");
+    sfyxffyilbt = jsStr.getString("sfyxffyilbt");
+    String save = saveMoney(client, gmsfhm, grbh, djlsh, month, month, syys, yanglaobz, yiliaobz, shiyebz, gangweibz, sfyxyq, sfyxffylbt, sfyxffyilbt);
+    if (!save.equals("保存成功！")) {
+      return save;
+    }
+    return gmsfhm + grxm + "--" + month + "补贴已保存";
   }
 
   public static void main(String[] args) throws Exception {
@@ -269,9 +350,8 @@ public class Demo {
       System.out.println("是否成功登录数据库: " + EntityUtils.toString(entity, "UTF-8"));
     }
     Thread.sleep(1000);
-    Thread.sleep(1000);
-    Thread.sleep(1000);
     System.out.println("登录....");
-    getA(client, "蔡继光", "370103196112290512","201704","201704");
+    // System.out.println(goSave(client, "蔡继光", "370103196112290512", "201706"));
+    System.out.println(goGet(client));
   }
 }
