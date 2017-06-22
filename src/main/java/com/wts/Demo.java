@@ -9,8 +9,11 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.dom4j.Element;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Demo {
 
@@ -281,29 +284,33 @@ public class Demo {
     if (datawindow.equals("")) {
       return "无法打开窗口！";
     }
-    String total = getTotal(client, datawindow);
-    mergePerson(client, datawindow,total);
+    Integer total = Integer.parseInt(getTotal(client, datawindow));
+    String mergePerson = mergePerson(client, datawindow,total);
     String personNext = getPersonPage(client, datawindow, "1");
-    JSONArray jsStrs = JSONArray.fromObject(personNext);
-    System.out.println(jsStrs.size());
-//    if (jsStrs.size() > 0) {
-//      JSONObject jsStr = jsStrs.getJSONObject(0);
-//      dwmc = jsStr.getString("dwmc");
-//      qyrdbh = jsStr.getString("qyrdbh");
-//      dwbh = jsStr.getString("dwbh");
-//      djlsh = jsStr.getString("djlsh");
-//      wtgyy = jsStr.getString("wtgyy");
-//      knrybh = jsStr.getString("knrybh");
-//      tcrq = jsStr.getString("tcrq");
-//      spzt = jsStr.getString("spzt");
-//      cjjg = jsStr.getString("cjjg");
-//      cjrq = jsStr.getString("cjrq");
-//      gmsfhm = jsStr.getString("gmsfhm");
-//      xb = jsStr.getString("xb");
-//      cjr = jsStr.getString("cjr");
-//      sfyba = jsStr.getString("sfyba");
-//      grbh = jsStr.getString("grbh");
-//    }
+    JSONArray jsStrs = JSONArray.fromObject(mergePerson);
+    List<PersonQY> personQYs = new ArrayList<PersonQY>();
+    if (jsStrs.size() > 0) {
+      for (int j=0;j<jsStrs.size()+1;j++){
+        JSONObject jsStr = jsStrs.getJSONObject(j);
+        PersonQY p=new PersonQY();
+        p.setDwmc(jsStr.getString("dwmc"));
+        p.setQyrdbh(jsStr.getString("qyrdbh"));
+        p.setDwbh(jsStr.getString("dwbh"));
+        p.setDjlsh(jsStr.getString("djlsh"));
+        p.setWtgyy(jsStr.getString("wtgyy"));
+        p.setKnrybh(jsStr.getString("knrybh"));
+        p.setTcrq(jsStr.getString("tcrq"));
+        p.setSpzt(jsStr.getString("spzt"));
+        p.setCjjg(jsStr.getString("cjjg"));
+        p.setCjrq(jsStr.getString("cjrq"));
+        p.setGmsfhm(jsStr.getString("gmsfhm"));
+        p.setXb(jsStr.getString("xb"));
+        p.setCjr(jsStr.getString("cjr"));
+        p.setSfyba(jsStr.getString("sfyba"));
+        p.setGrbh(jsStr.getString("grbh"));
+        personQYs.add(p);
+      }
+    }
 
     return personNext;
   }
