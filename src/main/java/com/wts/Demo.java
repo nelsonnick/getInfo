@@ -71,7 +71,7 @@ public class Demo {
   /**
    * 查找人员第N页
    */
-  private static String getPersonPage(CloseableHttpClient client, String tableMark, Integer nextPage) throws Exception {
+  private static String getPersonPage(CloseableHttpClient client, String tableMark, String nextPage) throws Exception {
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
@@ -269,9 +269,7 @@ public class Demo {
     }
     String person = getPerson(client,datawindow);
 
-    String personNext = getPersonPage(client,datawindow,2);
-
-
+    String personNext = getPersonPage(client,datawindow,"2");
 
 
     return person;
