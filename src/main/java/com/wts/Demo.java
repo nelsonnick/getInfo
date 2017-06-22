@@ -102,7 +102,7 @@ public class Demo {
     for (int i=1;i<page+1;i++){
       str=str+getPersonPage(client,tableMark,i+"")+",";
     }
-
+str=str.substring(0,str.length()-1);
   }
 
 
