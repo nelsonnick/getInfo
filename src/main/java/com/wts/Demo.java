@@ -45,7 +45,7 @@ public class Demo {
    * 查找人员第一页
    * 返回值为总页数。页面上是每页16条记录，但API返回的是每页12条记录，所以总页面有出入
    */
-  private static String getPerson(CloseableHttpClient client, String tableMark) throws Exception {
+  private static String getTotal(CloseableHttpClient client, String tableMark) throws Exception {
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
@@ -91,18 +91,18 @@ public class Demo {
     String res = EntityUtils.toString(entity, "UTF-8");
     String start = "init('true','true','[";
     String end = "]');columninput";
-    return res.substring(res.indexOf(start) + 21, res.indexOf(end)) ;
+    return res.substring(res.indexOf(start) + 21, res.indexOf(end));
   }
 
   /**
    * 合并人员
    */
-  private static String mergePerson(CloseableHttpClient client, String tableMark,Integer page) throws Exception {
-    String str="";
-    for (int i=1;i<page+1;i++){
-      str=str+getPersonPage(client,tableMark,i+"")+",";
+  private static String mergePerson(CloseableHttpClient client, String tableMark, Integer page) throws Exception {
+    String str = "";
+    for (int i = 1; i < page + 1; i++) {
+      str = str + getPersonPage(client, tableMark, i + "") + ",";
     }
-str=str.substring(0,str.length()-1);
+    return "[" + str.substring(0, str.length() - 1) + "]";
   }
 
 
@@ -281,9 +281,9 @@ str=str.substring(0,str.length()-1);
     if (datawindow.equals("")) {
       return "无法打开窗口！";
     }
-    String person = getPerson(client,datawindow);
-
-    String personNext = getPersonPage(client,datawindow,"1");
+    String total = getTotal(client, datawindow);
+    mergePerson(client, datawindow,total);
+    String personNext = getPersonPage(client, datawindow, "1");
     JSONArray jsStrs = JSONArray.fromObject(personNext);
     System.out.println(jsStrs.size());
 //    if (jsStrs.size() > 0) {
