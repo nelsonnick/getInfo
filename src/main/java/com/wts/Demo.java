@@ -17,7 +17,7 @@ public class Demo {
   /**
    * 打开窗口
    */
-  private static String DKCK(CloseableHttpClient client) throws Exception {
+  private static String openWindow(CloseableHttpClient client) throws Exception {
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
@@ -33,14 +33,17 @@ public class Demo {
     String res = EntityUtils.toString(entity, "UTF-8");
     String start = "tableMark='";
     String end = "' oncontextmenu=showMenu(";
-    return res.substring(res.indexOf(start) + 11, res.indexOf(end));
-
+    if (res.contains(start) && res.contains(end)) {
+      return res.substring(res.indexOf(start) + 11, res.indexOf(end));
+    } else {
+      return "";
+    }
   }
 
   /**
    * 点击查找，获取grbh
    */
-  private static String DJCZ(CloseableHttpClient client, String paraValue) throws Exception {
+  private static String getGrbh(CloseableHttpClient client, String paraValue) throws Exception {
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
@@ -56,25 +59,29 @@ public class Demo {
     CloseableHttpResponse response = client.execute(post);
     HttpEntity entity = response.getEntity();
     String res = EntityUtils.toString(entity, "UTF-8");
-    String start = "tableMark='";
-    String end = "' class=\"datawindowDiv\">";
-    String tableMark = res.substring(res.indexOf(start) + 11, res.indexOf(end));
+//    String start = "tableMark='";
+//    String end = "' class=\"datawindowDiv\">";
+//    String tableMark = res.substring(res.indexOf(start) + 11, res.indexOf(end));
 
     String s1 = "init('true','true','[";
     String e1 = "]');</script>";
     String grbh = "";
-    JSONArray jsStrs = JSONArray.fromObject(res.substring(res.indexOf(s1) + 20, res.indexOf(e1) + 1));
-    if (jsStrs.size() > 0) {
-      JSONObject jsStr = jsStrs.getJSONObject(0);
-      grbh = jsStr.getString("grbh");
+    if (res.contains(s1) && res.contains(e1)) {
+      JSONArray jsStrs = JSONArray.fromObject(res.substring(res.indexOf(s1) + 20, res.indexOf(e1) + 1));
+      if (jsStrs.size() > 0) {
+        JSONObject jsStr = jsStrs.getJSONObject(0);
+        grbh = jsStr.getString("grbh");
+      }
     }
     return grbh;
   }
 
+
   /**
    * 关闭窗体
    */
-  private static void GBCT(CloseableHttpClient client, String tableMark) throws Exception {
+
+  private static void closeWindow(CloseableHttpClient client, String tableMark) throws Exception {
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
@@ -87,17 +94,16 @@ public class Demo {
     String res = EntityUtils.toString(entity, "UTF-8");
   }
 
-
   /**
-   * 获取流水
+   * 获取流水号
    */
-  private static String HQLS(CloseableHttpClient client, String grxm,String gmsfhm, String grbh, String datawindow) throws Exception {
+  private static String getDjlsh(CloseableHttpClient client, String grxm, String gmsfhm, String grbh, String datawindow) throws Exception {
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
             .setPath("/lemis3/lemis3SuccorOrgAdmit.do")
             .setParameter("method", "queryAdmitPer")
-            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s dwbh=\"\" dwmc=\"\" sftc=\"\" gmsfhm=\"" + gmsfhm + "\" grxm=\""+grxm+"\" grbh=\"" + grbh + "\" sfbl=\"\" sfyba=\"\" /></p>")
+            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s dwbh=\"\" dwmc=\"\" sftc=\"\" gmsfhm=\"" + gmsfhm + "\" grxm=\"" + grxm + "\" grbh=\"" + grbh + "\" sfbl=\"\" sfyba=\"\" /></p>")
             .setParameter("tableMark", datawindow)
             .setParameter("_jbjgqxfw", "undefined")
             .setParameter("_sbjbjg", "undefined")
@@ -111,24 +117,26 @@ public class Demo {
     String start = "init('true','true','[";
     String end = "]');columninput";
     String djlsh = "";
-    JSONArray jsStrs = JSONArray.fromObject(res.substring(res.indexOf(start) + 20, res.indexOf(end) + 1));
-    if (jsStrs.size() > 0) {
-      JSONObject jsStr = jsStrs.getJSONObject(0);
-      djlsh = jsStr.getString("djlsh");
+    if (res.contains(start) && res.contains(end)) {
+      JSONArray jsStrs = JSONArray.fromObject(res.substring(res.indexOf(start) + 20, res.indexOf(end) + 1));
+      if (jsStrs.size() > 0) {
+        JSONObject jsStr = jsStrs.getJSONObject(0);
+        djlsh = jsStr.getString("djlsh");
+      }
     }
     return djlsh;
   }
 
   /**
-   * 获取剩余补贴月数
+   * 获取剩余月数
    */
-  private static String HQSY(CloseableHttpClient client, String grxm,String gmsfhm, String grbh,String djlsh) throws Exception {
+  private static String getSyys(CloseableHttpClient client, String grxm, String gmsfhm, String grbh, String djlsh) throws Exception {
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
             .setPath("/lemis3/lemis3MeritStation.do")
             .setParameter("method", "enterBonusAddForSinglePer")
-            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s djlsh=\""+djlsh+"\"/><s grbh=\""+grbh+"\"/><s gmsfhm=\""+gmsfhm+"\"/><s grxm=\""+grxm+"\"/><s btrylb=\"01\"/></p>")
+            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s djlsh=\"" + djlsh + "\"/><s grbh=\"" + grbh + "\"/><s gmsfhm=\"" + gmsfhm + "\"/><s grxm=\"" + grxm + "\"/><s btrylb=\"01\"/></p>")
             .setParameter("_jbjgqxfw", "undefined")
             .setParameter("_sbjbjg", "undefined")
             .setParameter("_dwqxfw", "undefined")
@@ -139,20 +147,23 @@ public class Demo {
     String res = EntityUtils.toString(entity, "UTF-8");
     String start = "dataType=\"number\" style=\"text-align:right;display:none;color:\" value=\"";
     String end = "\" defaultZero=\"true\" required=\"false\" /><input type='text' readonly=true  class=\"label\" tabindex=\"-1\" id=\"syys_label\" name=\"syys_label\" style=\"TEXT-ALIGN: right;color: \" title=\"";
-
-    return res.substring(res.indexOf(start) + 70, res.indexOf(end) );
+    if (res.contains(start) && res.contains(end)) {
+      return res.substring(res.indexOf(start) + 70, res.indexOf(end));
+    } else {
+      return "";
+    }
   }
 
   /**
    * 生成补贴
    */
-  private static String SCBT(CloseableHttpClient client, String grxm,String gmsfhm, String grbh, String djlsh, String qsny, String zzny) throws Exception {
+  private static String creatMoney(CloseableHttpClient client, String grxm, String gmsfhm, String grbh, String djlsh, String qsny, String zzny) throws Exception {
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
             .setPath("/lemis3/lemis3MeritStation.do")
             .setParameter("method", "createBonusAddForSinglePer")
-            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s grbh=\""+grbh+"\" msg=\"\" grxm=\""+grxm+"\" gmsfhm=\""+gmsfhm+"\" djlsh=\""+djlsh+"\" btrylb=\"01\" syys=\"57\" qsny=\""+qsny+"\" zzny=\""+zzny+"\" /><d k=\"dw_ylbt\"></d></p>")
+            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s grbh=\"" + grbh + "\" msg=\"\" grxm=\"" + grxm + "\" gmsfhm=\"" + gmsfhm + "\" djlsh=\"" + djlsh + "\" btrylb=\"01\" syys=\"57\" qsny=\"" + qsny + "\" zzny=\"" + zzny + "\" /><d k=\"dw_ylbt\"></d></p>")
             .setParameter("_jbjgqxfw", "undefined")
             .setParameter("_sbjbjg", "undefined")
             .setParameter("_dwqxfw", "undefined")
@@ -161,9 +172,9 @@ public class Demo {
     CloseableHttpResponse response = client.execute(post);
     HttpEntity entity = response.getEntity();
     String res = EntityUtils.toString(entity, "UTF-8");
-    if (res.indexOf("月的补贴已录入")>0){
+    if (res.indexOf("月的补贴已录入") > 0) {
       return "[]";
-    }else{
+    } else {
       String start = "init('true','true','[";
       String end = "]');</script>";
       return res.substring(res.indexOf(start) + 20, res.indexOf(end) + 1);
@@ -173,13 +184,13 @@ public class Demo {
   /**
    * 保存补贴
    */
-  private static String BCBT(CloseableHttpClient client, String grxm,String gmsfhm, String grbh, String djlsh,String qsny, String zzny, String syys,String yanglaobz,String yiliaobz,String shiyebz,String gangweibz) throws Exception {
+  private static String saveMoney(CloseableHttpClient client, String grxm, String gmsfhm, String grbh, String djlsh, String qsny, String zzny, String syys, String yanglaobz, String yiliaobz, String shiyebz, String gangweibz) throws Exception {
     URI u = new URIBuilder()
             .setScheme("http")
             .setHost("10.153.50.108:7001")
             .setPath("/lemis3/lemis3MeritStation.do")
             .setParameter("method", "saveBonusAddForSinglePer")
-            .setParameter("_xmlString",  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s grbh=\""+grbh+"\" msg=\"\" grxm=\""+grxm+"\" gmsfhm=\""+gmsfhm+"\" djlsh=\""+djlsh+"\" btrylb=\"01\" syys=\""+syys+"\" qsny=\""+qsny+"\" zzny=\""+zzny+"\" /><d k=\"dw_xzbt\"><r qsny=\""+qsny+"\" zzny=\""+zzny+"\" sfyxyq=\"0\" sfyxffylbt=\"1\" sfyxffyilbt=\"1\" yanglaobz=\""+yanglaobz+"\" yiliaobz=\""+yiliaobz+"\" shiyebz=\""+shiyebz+"\" gangweibz=\""+gangweibz+"\" /></d></p>")
+            .setParameter("_xmlString", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p><s grbh=\"" + grbh + "\" msg=\"\" grxm=\"" + grxm + "\" gmsfhm=\"" + gmsfhm + "\" djlsh=\"" + djlsh + "\" btrylb=\"01\" syys=\"" + syys + "\" qsny=\"" + qsny + "\" zzny=\"" + zzny + "\" /><d k=\"dw_xzbt\"><r qsny=\"" + qsny + "\" zzny=\"" + zzny + "\" sfyxyq=\"0\" sfyxffylbt=\"1\" sfyxffyilbt=\"1\" yanglaobz=\"" + yanglaobz + "\" yiliaobz=\"" + yiliaobz + "\" shiyebz=\"" + shiyebz + "\" gangweibz=\"" + gangweibz + "\" /></d></p>")
             .setParameter("_jbjgqxfw", "undefined")
             .setParameter("_sbjbjg", "undefined")
             .setParameter("_dwqxfw", "undefined")
@@ -196,26 +207,41 @@ public class Demo {
   /**
    * 发起请求
    */
-  private static void getA(CloseableHttpClient client, String gmsfhm) throws Exception {
-    String datawindow = DKCK(client);
-    String grbh = DJCZ(client, gmsfhm);
+  private static String getA(CloseableHttpClient client, String grxm, String gmsfhm, String qsny, String zzny) throws Exception {
 
-    String djlsh = HQLS(client, gmsfhm, grbh, datawindow);
-    JSONArray jsStrs = JSONArray.fromObject(SCBT(client,gmsfhm,grbh,djlsh,"201704","201704"));
-    String shiyebz="",yiliaobz="",yanglaobz="",gangweibz="",sfyxyq="",sfyxffylbt="",sfyxffyilbt="";
+    String datawindow = openWindow(client);
+    if (datawindow.equals("")) {
+      return "无法打开窗口！";
+    }
+    String grbh = getGrbh(client, gmsfhm);
+    if (grbh.equals("")) {
+      return "无法获取个人编号！";
+    }
+    String djlsh = getDjlsh(client, grxm, gmsfhm, grbh, datawindow);
+    if (djlsh.equals("")) {
+      return "无法获取登记流水号！";
+    }
+    String syys = getSyys(client, grxm, gmsfhm, grbh, djlsh);
+    if (syys.equals("0")) {
+      return "剩余补贴月数为零！";
+    }
+    JSONArray jsStrs = JSONArray.fromObject(creatMoney(client, grxm, gmsfhm, grbh, djlsh, qsny, zzny));
+    String shiyebz = "", yiliaobz = "", yanglaobz = "", gangweibz = "", sfyxyq = "", sfyxffylbt = "", sfyxffyilbt = "";
     if (jsStrs.size() > 0) {
       JSONObject jsStr = jsStrs.getJSONObject(0);
-      shiyebz=jsStr.getString("shiyebz");
-      yiliaobz=jsStr.getString("yiliaobz");
-      yanglaobz=jsStr.getString("yanglaobz");
-      gangweibz=jsStr.getString("gangweibz");
-      sfyxyq=jsStr.getString("sfyxyq");
-      sfyxffylbt=jsStr.getString("sfyxffylbt");
-      sfyxffyilbt=jsStr.getString("sfyxffyilbt");
+      shiyebz = jsStr.getString("shiyebz");
+      yiliaobz = jsStr.getString("yiliaobz");
+      yanglaobz = jsStr.getString("yanglaobz");
+      gangweibz = jsStr.getString("gangweibz");
+      sfyxyq = jsStr.getString("sfyxyq");
+      sfyxffylbt = jsStr.getString("sfyxffylbt");
+      sfyxffyilbt = jsStr.getString("sfyxffyilbt");
+      String res = saveMoney(client, grxm, gmsfhm, grbh, djlsh, qsny, zzny, syys, yanglaobz, yiliaobz, shiyebz, gangweibz);
+      return res;
+    } else {
+      return "无法生成补贴！";
     }
-    System.out.println(jsStrs.toString());
-    String res=HQSY(client,djlsh,gmsfhm,grbh);
-    System.out.println(res);
+
 
   }
 
@@ -246,6 +272,6 @@ public class Demo {
     Thread.sleep(1000);
     Thread.sleep(1000);
     System.out.println("登录....");
-    getA(client, "370103196112290512","蔡继光");
+    getA(client, "蔡继光", "370103196112290512","201704","201704");
   }
 }
