@@ -43,6 +43,7 @@ public class Demo {
 
   /**
    * 查找人员第一页
+   * 返回值为总页数。页面上是每页16条记录，但API返回的是每页12条记录，所以总页面有出入
    */
   private static String getPerson(CloseableHttpClient client, String tableMark) throws Exception {
     URI u = new URIBuilder()
@@ -64,7 +65,8 @@ public class Demo {
     String end = "]');columninput";
     String pageStart = "记录&nbsp;&nbsp;&nbsp;&nbsp;1/";
     String pageEnd = "页</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    return res.substring(res.indexOf(start) + 20, res.indexOf(end)) +":"+ res.substring(res.indexOf(pageStart) + 28, res.indexOf(pageEnd));
+    //return res.substring(res.indexOf(start) + 20, res.indexOf(end)) +":"+ res.substring(res.indexOf(pageStart) + 28, res.indexOf(pageEnd));
+    return res.substring(res.indexOf(pageStart) + 28, res.indexOf(pageEnd));
 
   }
 
@@ -89,8 +91,20 @@ public class Demo {
     String res = EntityUtils.toString(entity, "UTF-8");
     String start = "init('true','true','[";
     String end = "]');columninput";
-    return res.substring(res.indexOf(start) + 20, res.indexOf(end)) ;
+    return res.substring(res.indexOf(start) + 21, res.indexOf(end)) ;
   }
+
+  /**
+   * 合并人员
+   */
+  private static String mergePerson(CloseableHttpClient client, String tableMark,Integer page) throws Exception {
+    String str="";
+    for (int i=1;i<page+1;i++){
+      str=str+getPersonPage(client,tableMark,i+"")+",";
+    }
+
+  }
+
 
   /**
    * 点击查找，获取grbh
@@ -269,10 +283,29 @@ public class Demo {
     }
     String person = getPerson(client,datawindow);
 
-    String personNext = getPersonPage(client,datawindow,"2");
+    String personNext = getPersonPage(client,datawindow,"1");
+    JSONArray jsStrs = JSONArray.fromObject(personNext);
+    System.out.println(jsStrs.size());
+//    if (jsStrs.size() > 0) {
+//      JSONObject jsStr = jsStrs.getJSONObject(0);
+//      dwmc = jsStr.getString("dwmc");
+//      qyrdbh = jsStr.getString("qyrdbh");
+//      dwbh = jsStr.getString("dwbh");
+//      djlsh = jsStr.getString("djlsh");
+//      wtgyy = jsStr.getString("wtgyy");
+//      knrybh = jsStr.getString("knrybh");
+//      tcrq = jsStr.getString("tcrq");
+//      spzt = jsStr.getString("spzt");
+//      cjjg = jsStr.getString("cjjg");
+//      cjrq = jsStr.getString("cjrq");
+//      gmsfhm = jsStr.getString("gmsfhm");
+//      xb = jsStr.getString("xb");
+//      cjr = jsStr.getString("cjr");
+//      sfyba = jsStr.getString("sfyba");
+//      grbh = jsStr.getString("grbh");
+//    }
 
-
-    return person;
+    return personNext;
   }
 
 
