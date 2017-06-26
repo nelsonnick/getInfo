@@ -46,7 +46,7 @@ public class SecurityDownload {
       XSSFWorkbook workbookBefore = new XSSFWorkbook(new FileInputStream("c:\\" + result + ".xlsx"));
       XSSFSheet sheetBefore = workbookBefore.getSheetAt(0);
       int total = sheetBefore.getLastRowNum()+1;
-      System.out.println(total);
+      System.out.println("总人数："+total);
       int total1,total2,total3,total4,total5,total6,total7;
       if (total<=8) {
         total1=total;
