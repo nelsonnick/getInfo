@@ -57,7 +57,7 @@ public class SecurityAnalysis {
         XSSFWorkbook workbookBefore = new XSSFWorkbook(new FileInputStream("c:\\" + result + ".xlsx"));
         XSSFSheet sheetBefore = workbookBefore.getSheetAt(0);
         int count = sheetBefore.getRow(0).getPhysicalNumberOfCells();
-        int totals = sheetBefore.getLastRowNum()+1;
+        int totals = sheetBefore.getLastRowNum();
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("sheet1");
         XSSFRow row = sheet.createRow(0);
