@@ -57,7 +57,7 @@ public class SecurityAnalysis {
         XSSFWorkbook workbookBefore = new XSSFWorkbook(new FileInputStream("c:\\" + result + ".xlsx"));
         XSSFSheet sheetBefore = workbookBefore.getSheetAt(0);
         int count = sheetBefore.getRow(0).getPhysicalNumberOfCells();
-        int totals = sheetBefore.getLastRowNum();
+        int totals = sheetBefore.getLastRowNum()+1;
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("sheet1");
         XSSFRow row = sheet.createRow(0);
@@ -112,7 +112,10 @@ public class SecurityAnalysis {
               if (zdlsh.equals("计划  ")) {
                 aa = "正常缴费";
                 bb = "当月缴费";
-              } else {
+              } else if (zdlsh.trim().equals("未填单据")) {
+                aa = "未交费";
+                bb = "开出单据未缴费";
+              } else{
                 aa = "补缴";
                 bb = qrsj;
               }

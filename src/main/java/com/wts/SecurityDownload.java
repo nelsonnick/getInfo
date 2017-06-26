@@ -45,9 +45,10 @@ public class SecurityDownload {
 
       XSSFWorkbook workbookBefore = new XSSFWorkbook(new FileInputStream("c:\\" + result + ".xlsx"));
       XSSFSheet sheetBefore = workbookBefore.getSheetAt(0);
-      int total = sheetBefore.getLastRowNum();
+      int total = sheetBefore.getLastRowNum()+1;
+      System.out.println(total);
       int total1,total2,total3,total4,total5,total6,total7;
-      if (total<8) {
+      if (total<=8) {
         total1=total;
         total2=0;
         total3=0;
@@ -77,7 +78,7 @@ public class SecurityDownload {
         SecurityThread t5 = new SecurityThread(result, total4, total5, sheetBefore);
         SecurityThread t6 = new SecurityThread(result, total5, total6, sheetBefore);
         SecurityThread t7 = new SecurityThread(result, total6, total7, sheetBefore);
-        SecurityThread t8 = new SecurityThread(result, total7, total + 1, sheetBefore);
+        SecurityThread t8 = new SecurityThread(result, total7, total + 2, sheetBefore);
         t1.start();
         t2.start();
         t3.start();

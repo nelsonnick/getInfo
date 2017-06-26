@@ -43,9 +43,9 @@ public class CommerceDownload {
     } else {
       XSSFWorkbook workbookBefore = new XSSFWorkbook(new FileInputStream("c:\\" + result + ".xlsx"));
       XSSFSheet sheetBefore = workbookBefore.getSheetAt(0);
-      int total = sheetBefore.getLastRowNum();
+      int total = sheetBefore.getLastRowNum()+1;
       int total1,total2,total3,total4,total5,total6,total7;
-      if (total<8) {
+      if (total<=8) {
         total1=total;
         total2=0;
         total3=0;

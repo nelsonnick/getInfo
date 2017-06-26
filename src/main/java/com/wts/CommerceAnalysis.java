@@ -70,7 +70,7 @@ public class CommerceAnalysis {
           String fileName = "c:/" + result + "_工商下载数据/" + id + name + ".txt";
           File f = new File(fileName);
           if (!f.exists()) {
-            int total = sheet.getLastRowNum();
+            int total = sheet.getLastRowNum()+1;
             XSSFRow newRow = sheet.createRow(total + 1);
             newRow.createCell(0).setCellValue(id);
             newRow.createCell(1).setCellValue(name);
